@@ -1,3 +1,6 @@
-"""TubeSounds: Tonspur von YouTube-Videos als Audiodatei speichern."""
+"""TubeSounds: Tonspur von YouTube-Videos als Audiodatei speichern.
 
-__version__ = "0.1.0"
+Copyright (C) 2026 afamaus. Lizenz: GNU GPL v3 oder später, siehe LICENSE.
+"""
+
+__version__ = "0.2.0"

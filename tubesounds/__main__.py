@@ -5,6 +5,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from . import settings
 from .core import FORMATS, DownloadError, Progress, download_audio
 
 
@@ -18,8 +19,10 @@ def main(argv=None) -> int:
 
     parser = argparse.ArgumentParser(prog="tubesounds", description=__doc__)
     parser.add_argument("url", help="Link zum YouTube-Video")
-    parser.add_argument("-f", "--format", choices=FORMATS, default="mp3")
-    parser.add_argument("-o", "--output", type=Path, help="Zielordner (Standard: Downloads)")
+    saved = settings.load()
+    parser.add_argument("-f", "--format", choices=FORMATS, default=saved.format)
+    parser.add_argument("-o", "--output", type=Path, default=saved.target_dir(),
+                        help="Zielordner (Standard: wie in den Einstellungen)")
     args = parser.parse_args(argv)
 
     def show(p: Progress) -> None:
@@ -29,7 +32,7 @@ def main(argv=None) -> int:
             print("\nWandle um ...", flush=True)
 
     try:
-        path = download_audio(args.url, args.format, args.output, show)
+        path = download_audio(args.url, args.format, args.output, show, saved.audio())
     except DownloadError as exc:
         print(f"Fehler: {exc}", file=sys.stderr)
         return 1

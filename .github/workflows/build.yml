@@ -40,7 +40,7 @@ jobs:
       - name: Build (Windows)
         if: runner.os == 'Windows'
         run: |
-          pyinstaller --noconfirm --onefile --windowed --name TubeSounds --collect-all imageio_ffmpeg --collect-data tubesounds tubesounds_app.py
+          pyinstaller --noconfirm --onefile --windowed --name TubeSounds --icon assets/tubesounds.ico --collect-all imageio_ffmpeg --collect-data tubesounds tubesounds_app.py
           Move-Item dist/TubeSounds.exe dist/${{ matrix.artifact }}
 
       - name: Build (macOS)
