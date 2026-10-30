@@ -1,4 +1,5 @@
-"""Kommandozeilen-Einstieg: python -m tubesounds <link> [-f mp3|m4a|wav] [-o ordner]"""
+"""Einstieg: ohne Argumente startet die Oberfläche, sonst
+python -m tubesounds <link> [-f mp3|m4a|wav] [-o ordner]"""
 
 import argparse
 import sys
@@ -8,6 +9,13 @@ from .core import FORMATS, DownloadError, Progress, download_audio
 
 
 def main(argv=None) -> int:
+    argv = sys.argv[1:] if argv is None else argv
+    if not argv:
+        from .gui import run
+
+        run()
+        return 0
+
     parser = argparse.ArgumentParser(prog="tubesounds", description=__doc__)
     parser.add_argument("url", help="Link zum YouTube-Video")
     parser.add_argument("-f", "--format", choices=FORMATS, default="mp3")
