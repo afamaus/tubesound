@@ -14,21 +14,24 @@ from .core import FORMATS, DownloadError, Progress, default_output_dir, download
 
 BANNER = Path(__file__).parent / "assets" / "banner.png"
 
-BLACK = "#000000"
-PANEL = "#020a02"
-GREEN = "#00ff41"
-GREEN_MID = "#00b32d"
-GREEN_DIM = "#005f17"
-HEAD = "#d6ffd9"
-ERROR = "#ff3b3b"
+# Farben aus dem Banner: tiefes Petrol als Hintergrund, Mint und Türkis als Akzente
+BLACK = "#01080b"
+PANEL = "#03131a"
+MINT = "#3fcf9f"
+TEAL = "#4fbfc8"
+TEAL_MID = "#2f8f8f"
+TEAL_DIM = "#0f3d40"
+TEXT = "#dff7f2"
+HEAD = "#e6fffa"
+ERROR = "#ff5a6a"
 
 RAIN_CHARS = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789"
 RAIN_STEP = 16  # Pixel zwischen Spalten und Zeilen
 RAIN_TRAIL = 14  # Länge der Spur hinter dem Kopf
 RAIN_TICK_MS = 70
-# Farbverlauf der Spur: vom hellen Kopf bis fast schwarz
-RAIN_COLORS = [HEAD, GREEN, GREEN, GREEN_MID, GREEN_MID] + [
-    f"#00{g:02x}{g // 4:02x}" for g in range(140, 10, -130 // (RAIN_TRAIL - 4))
+# Farbverlauf der Spur: vom hellen Kopf über Mint und Türkis bis fast schwarz
+RAIN_COLORS = [HEAD, MINT, MINT, TEAL, TEAL_MID] + [
+    f"#{g // 8:02x}{g:02x}{g:02x}" for g in range(120, 10, -110 // (RAIN_TRAIL - 4))
 ]
 
 BAR_WIDTH = 24
@@ -135,8 +138,8 @@ class TubeSoundsApp:
     # ---------- Aufbau ----------
 
     def _build_panel(self) -> tk.Frame:
-        panel = tk.Frame(self.canvas, bg=PANEL, highlightbackground=GREEN,
-                         highlightcolor=GREEN, highlightthickness=1, padx=24, pady=18)
+        panel = tk.Frame(self.canvas, bg=PANEL, highlightbackground=TEAL_MID,
+                         highlightcolor=TEAL_MID, highlightthickness=1, padx=24, pady=18)
 
         try:
             self.banner = tk.PhotoImage(file=str(BANNER))
@@ -144,59 +147,59 @@ class TubeSoundsApp:
                                                                    columnspan=2)
         except tk.TclError:  # Bild fehlt: Schriftzug als Ersatz
             tk.Label(panel, text="T U B E S O U N D S", font=self.font_title,
-                     fg=GREEN, bg=PANEL).grid(row=0, column=0, columnspan=2, sticky="w")
+                     fg=MINT, bg=PANEL).grid(row=0, column=0, columnspan=2, sticky="w")
         tk.Label(panel, text=f"// audio extraction protocol v{__version__}", font=self.font,
-                 fg=GREEN_MID, bg=PANEL).grid(row=1, column=0, columnspan=2, sticky="w",
+                 fg=TEAL, bg=PANEL).grid(row=1, column=0, columnspan=2, sticky="w",
                                               pady=(6, 14))
 
-        tk.Label(panel, text="> LINK", font=self.font_bold, fg=GREEN,
+        tk.Label(panel, text="> LINK", font=self.font_bold, fg=MINT,
                  bg=PANEL).grid(row=2, column=0, columnspan=2, sticky="w")
         self.url_var = tk.StringVar()
         self.url_entry = tk.Entry(panel, textvariable=self.url_var, font=self.font, width=48,
-                                  bg=BLACK, fg=GREEN, insertbackground=GREEN,
-                                  selectbackground=GREEN_DIM, selectforeground=HEAD,
+                                  bg=BLACK, fg=TEXT, insertbackground=MINT,
+                                  selectbackground=TEAL_DIM, selectforeground=HEAD,
                                   relief="flat", highlightthickness=1,
-                                  highlightbackground=GREEN_DIM, highlightcolor=GREEN)
+                                  highlightbackground=TEAL_MID, highlightcolor=MINT)
         self.url_entry.grid(row=3, column=0, columnspan=2, sticky="ew", ipady=6, pady=(4, 16))
         self._add_paste_menu(self.url_entry)
 
-        tk.Label(panel, text="> FORMAT", font=self.font_bold, fg=GREEN,
+        tk.Label(panel, text="> FORMAT", font=self.font_bold, fg=MINT,
                  bg=PANEL).grid(row=4, column=0, sticky="w")
         self.format_var = tk.StringVar(value=FORMATS[0].upper())
         self.format_menu = tk.OptionMenu(panel, self.format_var, *(f.upper() for f in FORMATS))
-        self.format_menu.configure(font=self.font_bold, bg=BLACK, fg=GREEN,
-                                   activebackground=GREEN_DIM, activeforeground=HEAD,
+        self.format_menu.configure(font=self.font_bold, bg=BLACK, fg=MINT,
+                                   activebackground=TEAL_DIM, activeforeground=HEAD,
                                    relief="flat", highlightthickness=1,
-                                   highlightbackground=GREEN_DIM, indicatoron=False,
+                                   highlightbackground=TEAL_MID, indicatoron=False,
                                    width=8, cursor="hand2")
-        self.format_menu["menu"].configure(font=self.font, bg=BLACK, fg=GREEN,
-                                           activebackground=GREEN, activeforeground=BLACK,
+        self.format_menu["menu"].configure(font=self.font, bg=BLACK, fg=MINT,
+                                           activebackground=MINT, activeforeground=BLACK,
                                            relief="flat", bd=0)
         self.format_menu.grid(row=5, column=0, sticky="w", pady=(4, 0), ipady=4)
 
         self.button = tk.Button(panel, text="[ DOWNLOAD ]", font=self.font_bold, bg=BLACK,
-                                fg=GREEN, activebackground=GREEN, activeforeground=BLACK,
+                                fg=MINT, activebackground=MINT, activeforeground=BLACK,
                                 relief="flat", bd=0, highlightthickness=1,
-                                highlightbackground=GREEN, cursor="hand2", padx=18, pady=6,
+                                highlightbackground=MINT, cursor="hand2", padx=18, pady=6,
                                 command=self.start_download)
         self.button.grid(row=5, column=1, sticky="e", pady=(4, 0))
         self.button.bind("<Enter>", lambda _e: self._hover(True))
         self.button.bind("<Leave>", lambda _e: self._hover(False))
 
         self.bar_var = tk.StringVar(value="")
-        tk.Label(panel, textvariable=self.bar_var, font=self.font, fg=GREEN,
+        tk.Label(panel, textvariable=self.bar_var, font=self.font, fg=TEAL,
                  bg=PANEL).grid(row=6, column=0, columnspan=2, sticky="w", pady=(18, 0))
         self.status_var = tk.StringVar(value=f"> bereit. ziel: {default_output_dir()}")
         self.status = tk.Label(panel, textvariable=self.status_var, font=self.font,
-                               fg=GREEN_MID, bg=PANEL, wraplength=540, justify="left")
+                               fg=TEAL, bg=PANEL, wraplength=540, justify="left")
         self.status.grid(row=7, column=0, columnspan=2, sticky="w")
 
         panel.columnconfigure(1, weight=1)
         return panel
 
     def _add_paste_menu(self, entry: tk.Entry) -> None:
-        menu = tk.Menu(entry, tearoff=False, font=self.font, bg=BLACK, fg=GREEN,
-                       activebackground=GREEN, activeforeground=BLACK)
+        menu = tk.Menu(entry, tearoff=False, font=self.font, bg=BLACK, fg=MINT,
+                       activebackground=MINT, activeforeground=BLACK)
         menu.add_command(label="Einfügen", command=lambda: entry.event_generate("<<Paste>>"))
         menu.add_command(label="Leeren", command=lambda: self.url_var.set(""))
         for button in ("<Button-3>", "<Button-2>"):
@@ -208,7 +211,7 @@ class TubeSoundsApp:
     def _hover(self, inside: bool) -> None:
         if self.busy:
             return
-        self.button.configure(bg=GREEN if inside else BLACK, fg=BLACK if inside else GREEN)
+        self.button.configure(bg=MINT if inside else BLACK, fg=BLACK if inside else MINT)
 
     def _animate(self) -> None:
         self.rain.step()
@@ -226,7 +229,7 @@ class TubeSoundsApp:
         fmt = self.format_var.get().lower()
         self.busy = True
         self.button.configure(text="[ LÄUFT... ]", state="disabled", bg=BLACK,
-                              disabledforeground=GREEN_DIM)
+                              disabledforeground=TEAL_DIM)
         self.bar_var.set(progress_bar(0))
         self._set_status("> verbinde mit der matrix ...")
         threading.Thread(target=self._worker, args=(url, fmt), daemon=True).start()
@@ -266,11 +269,11 @@ class TubeSoundsApp:
             self.bar_var.set("")
             self._set_status(f"> fehler: {short_error(payload)}", error=True)
         self.busy = False
-        self.button.configure(text="[ DOWNLOAD ]", state="normal", bg=BLACK, fg=GREEN)
+        self.button.configure(text="[ DOWNLOAD ]", state="normal", bg=BLACK, fg=MINT)
 
     def _set_status(self, text: str, error: bool = False) -> None:
         self.status_var.set(text)
-        self.status.configure(fg=ERROR if error else GREEN_MID)
+        self.status.configure(fg=ERROR if error else TEAL)
 
 
 def short_error(message: str) -> str:
