@@ -7,9 +7,12 @@ import random
 import threading
 import tkinter as tk
 import tkinter.font as tkfont
+from pathlib import Path
 
 from . import __version__
 from .core import FORMATS, DownloadError, Progress, default_output_dir, download_audio
+
+BANNER = Path(__file__).parent / "assets" / "banner.png"
 
 BLACK = "#000000"
 PANEL = "#020a02"
@@ -113,8 +116,8 @@ class TubeSoundsApp:
 
         root.title("TubeSounds")
         root.configure(bg=BLACK)
-        root.geometry("760x480")
-        root.minsize(620, 420)
+        root.geometry("760x760")
+        root.minsize(640, 700)
 
         self.canvas = tk.Canvas(root, bg=BLACK, highlightthickness=0)
         self.canvas.pack(fill="both", expand=True)
@@ -133,18 +136,23 @@ class TubeSoundsApp:
 
     def _build_panel(self) -> tk.Frame:
         panel = tk.Frame(self.canvas, bg=PANEL, highlightbackground=GREEN,
-                         highlightcolor=GREEN, highlightthickness=1, padx=28, pady=22)
+                         highlightcolor=GREEN, highlightthickness=1, padx=24, pady=18)
 
-        tk.Label(panel, text="T U B E S O U N D S", font=self.font_title,
-                 fg=GREEN, bg=PANEL).grid(row=0, column=0, columnspan=2, sticky="w")
+        try:
+            self.banner = tk.PhotoImage(file=str(BANNER))
+            tk.Label(panel, image=self.banner, bg=PANEL, bd=0).grid(row=0, column=0,
+                                                                   columnspan=2)
+        except tk.TclError:  # Bild fehlt: Schriftzug als Ersatz
+            tk.Label(panel, text="T U B E S O U N D S", font=self.font_title,
+                     fg=GREEN, bg=PANEL).grid(row=0, column=0, columnspan=2, sticky="w")
         tk.Label(panel, text=f"// audio extraction protocol v{__version__}", font=self.font,
                  fg=GREEN_MID, bg=PANEL).grid(row=1, column=0, columnspan=2, sticky="w",
-                                              pady=(0, 18))
+                                              pady=(6, 14))
 
         tk.Label(panel, text="> LINK", font=self.font_bold, fg=GREEN,
                  bg=PANEL).grid(row=2, column=0, columnspan=2, sticky="w")
         self.url_var = tk.StringVar()
-        self.url_entry = tk.Entry(panel, textvariable=self.url_var, font=self.font, width=52,
+        self.url_entry = tk.Entry(panel, textvariable=self.url_var, font=self.font, width=48,
                                   bg=BLACK, fg=GREEN, insertbackground=GREEN,
                                   selectbackground=GREEN_DIM, selectforeground=HEAD,
                                   relief="flat", highlightthickness=1,
@@ -180,7 +188,7 @@ class TubeSoundsApp:
                  bg=PANEL).grid(row=6, column=0, columnspan=2, sticky="w", pady=(18, 0))
         self.status_var = tk.StringVar(value=f"> bereit. ziel: {default_output_dir()}")
         self.status = tk.Label(panel, textvariable=self.status_var, font=self.font,
-                               fg=GREEN_MID, bg=PANEL, wraplength=560, justify="left")
+                               fg=GREEN_MID, bg=PANEL, wraplength=540, justify="left")
         self.status.grid(row=7, column=0, columnspan=2, sticky="w")
 
         panel.columnconfigure(1, weight=1)
