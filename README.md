@@ -6,9 +6,28 @@ Einfacher, portabler Downloader, der die Tonspur von YouTube-Videos als **MP3**,
 
 - [x] Schritt 1: Download-Kern (yt-dlp + mitgeliefertes ffmpeg)
 - [x] Schritt 2: Oberfläche im Matrix-Look
-- [ ] Schritt 3: Portable Builds für Windows, macOS und Linux
+- [x] Schritt 3: Portable Builds für Windows, macOS und Linux
 
-## Starten
+## Portable Version
+
+Unter [Releases](../../releases) gibt es fertige Dateien, die ohne Installation starten:
+
+| System  | Datei | Hinweis |
+|---------|-------|---------|
+| Windows | `TubeSounds-windows.exe` | SmartScreen warnt beim ersten Start: *Weitere Informationen → Trotzdem ausführen* |
+| macOS (Apple Silicon) | `TubeSounds-macos.zip` | Entpacken, dann *Rechtsklick → Öffnen*, weil die App nicht signiert ist |
+| Linux   | `TubeSounds-linux` | `chmod +x TubeSounds-linux` und starten |
+
+Eine neue Version entsteht, sobald ein Tag wie `v0.1.0` gepusht wird:
+
+```bash
+git tag v0.1.0 && git push origin v0.1.0
+```
+
+Bei jedem Pull Request baut GitHub Actions die Dateien ebenfalls. Sie liegen dann unter *Actions → Artifacts*.
+Wenn YouTube Downloads blockiert, reicht meist ein neuer Tag: Der Build holt automatisch die aktuelle yt-dlp-Version.
+
+## Aus dem Quellcode starten
 
 ```bash
 pip install -r requirements.txt
