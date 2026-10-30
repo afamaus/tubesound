@@ -1,0 +1,26 @@
+TubeSounds
+Copyright (C) 2026 afamaus
+https://github.com/afamaus/tubesound
+
+This program is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option)
+any later version. See LICENSE.
+
+The name "TubeSounds"/"TubeSound" and the logo, banner and icon files
+(assets/, tubesounds/assets/) are not covered by the GPL. All rights reserved
+by afamaus. Forks must use their own name and artwork.
+
+Third-party components
+----------------------
+
+yt-dlp                       The Unlicense         https://github.com/yt-dlp/yt-dlp
+imageio-ffmpeg               BSD 2-Clause License  https://github.com/imageio/imageio-ffmpeg
+FFmpeg (bundled binary,      GPL v3 (static build) https://ffmpeg.org
+  via imageio-ffmpeg)        Source code is available at https://ffmpeg.org/download.html
+Python                       PSF License           https://www.python.org
+Tcl/Tk (tkinter)             Tcl/Tk License (BSD)  https://www.tcl.tk
+PyInstaller bootloader       GPL v2 with bootloader exception (build tool only)
+
+The portable builds contain the components listed above. Their license texts
+are part of the respective source distributions.
